@@ -60,14 +60,6 @@ def sendMessage(to, text, contentMetadata={}, contentType=0):
     messageReq[to] += 1
     client._client.sendMessage(messageReq[to], mes)
 
-def NOTIFIED_ADD_CONTACT(op):
-    try:
-        sendMessage(op.param1, client.getContact(op.param1).displayName + " Ciyee ngelock nih yee")
-    except Exception as e:
-        print e
-        print ("\n\nNOTIFIED_ADD_CONTACT\n\n")
-        return
-
 tracer.addOpInterrupt(5,NOTIFIED_ADD_CONTACT)
 
 def NOTIFIED_ACCEPT_GROUP_INVITATION(op):
@@ -83,7 +75,7 @@ tracer.addOpInterrupt(17,NOTIFIED_ACCEPT_GROUP_INVITATION)
 
 def NOTIFIED_KICKOUT_FROM_GROUP(op):
     try:
-        sendMessage(op.param1, client.getContact(op.param3).displayName + " Mampus lu kena kick")
+        sendMessage(op.param1, client.getContact(op.param3).displayName + " Jha")
     except Exception as e:
         print e
         print ("\n\nNOTIFIED_KICKOUT_FROM_GROUP\n\n")
@@ -93,7 +85,7 @@ tracer.addOpInterrupt(19,NOTIFIED_KICKOUT_FROM_GROUP)
 
 def NOTIFIED_LEAVE_GROUP(op):
     try:
-        sendMessage(op.param1, client.getContact(op.param2).displayName + " idih baper langsung leave")
+        sendMessage(op.param1, client.getContact(op.param2).displayName + " Hmm")
     except Exception as e:
         print e
         print ("\n\nNOTIFIED_LEAVE_GROUP\n\n")
@@ -186,13 +178,13 @@ def SEND_MESSAGE(op):
                     group = client.getGroup(msg.to)
                     group.name = key
                     client.updateGroup(group)
-                    sendMessage(msg.to,"Group Name"+key+"Canged to")
+                    sendMessage(msg.to,"Group Name"+key+"Changed to")
                 if msg.text == "url":
                     sendMessage(msg.to,"line://ti/g/" + client._client.reissueGroupTicket(msg.to))
                 if msg.text == "open":
                     group = client.getGroup(msg.to)
                     if group.preventJoinByTicket == False:
-                        sendMessage(msg.to, "beres boss")
+                        sendMessage(msg.to, "os akmj")
                     else:
                         group.preventJoinByTicket = False
                         client.updateGroup(group)
@@ -200,16 +192,16 @@ def SEND_MESSAGE(op):
                 if msg.text == "close":
                     group = client.getGroup(msg.to)
                     if group.preventJoinByTicket == True:
-                        sendMessage(msg.to, "beres boss")
+                        sendMessage(msg.to, "os akmj")
                     else:
                         group.preventJoinByTicket = True
                         client.updateGroup(group)
-                        sendMessage(msg.to, "Beres boss")
+                        sendMessage(msg.to, "os akmj")
                 if "kick:" in msg.text:
                     key = msg.text[5:]
                     client.kickoutFromGroup(msg.to, [key])
                     contact = client.getContact(key)
-                    sendMessage(msg.to, ""+contact.displayName+" semoga tenang di alam sana kawan")
+                    sendMessage(msg.to, ""+contact.displayName+" jha")
                 if "kick:" in msg.text:
                     key = msg.text[3:]
                     group = client.getGroup(msg.to)
@@ -217,27 +209,23 @@ def SEND_MESSAGE(op):
                     Mids = [contact.mid for contact in group.members]
                     if key in Names:
                         kazu = Names.index(key)
-                        sendMessage(msg.to, "This Is Me")
+                        sendMessage(msg.to, "uwu")
                         client.kickoutFromGroup(msg.to, [""+Mids[kazu]+""])
-                        contact = client.getContact(Mids[kazu])
-                        sendMessage(msg.to, ""+contact.displayName+" Fuck")
-                    else:
-                        sendMessage(msg.to, "This Is ♠Me")
                 if msg.text == "cancel":
                     group = client.getGroup(msg.to)
                     if group.invitee is None:
-                        sendMessage(op.message.to, "Gak ada pendingan bro")
+                        sendMessage(op.message.to, "Kosong pendingan")
                     else:
                         gInviMids = [contact.mid for contact in group.invitee]
                         client.cancelGroupInvitation(msg.to, gInviMids)
-                        sendMessage(msg.to, str(len(group.invitee)) + " Beres")
+                        sendMessage(msg.to, str(len(group.invitee)) + " Os akmj")
                 if "invite:" in msg.text:
                     key = msg.text[-33:]
                     client.findAndAddContactsByMid(key)
                     client.inviteIntoGroup(msg.to, [key])
                     contact = client.getContact(key)
-                    sendMessage(msg.to, ""+contact.displayName+" itu temenku ijin inpit")
-                if msg.text == "me":
+                    sendMessage(msg.to, ""+contact.displayName+" noh dah diinpit")
+                if msg.text == "send kontak":
                     M = Message()
                     M.to = msg.to
                     M.contentType = 13
@@ -249,11 +237,9 @@ def SEND_MESSAGE(op):
                     contact = client.getContact(key)
                     sendMessage(msg.to, ""+contact.displayName+"'s contact")
                 if msg.text == "time":
-                    sendMessage(msg.to, "hari ini " + datetime.datetime.today().strftime('%d-%m-%Y %H:%M:%S') + " WIB")
-                if msg.text == "gift":
-                    sendMessage(msg.to, text="gift sent", contentMetadata=None, contentType=9)
+                    sendMessage(msg.to, "Sekarang " + datetime.datetime.today().strftime('%d-%m-%Y %H:%M:%S') + " WIB")
                 if msg.text == "set":
-                    sendMessage(msg.to, "Wait, gw cek yang sider")
+                    sendMessage(msg.to, "Ntar gw cek sider")
                     try:
                         del wait['readPoint'][msg.to]
                         del wait['readMember'][msg.to]
@@ -274,9 +260,9 @@ def SEND_MESSAGE(op):
                                 print rom
                                 chiya += rom[1] + "\n"
 
-                        sendMessage(msg.to, "Noh yang sider hajar dah %s\n\nList jones seumur hidup\n%sMoga bintitan tuh mata\n\nWaktu & Tanggal:\n[%s]"  % (wait['readMember'][msg.to],chiya,setTime[msg.to]))
+                        sendMessage(msg.to, "Ketauan gayn %s\n\nNih\n%smuncul\n\nWaktu & Tanggal:\n[%s]"  % (wait['readMember'][msg.to],chiya,setTime[msg.to]))
                     else:
-                        sendMessage(msg.to, "gak usah lebay uwes, gae dolanan ae masane")
+                        sendMessage(msg.to, "gada sider amjinc")
 #-------------------------------------------------------------
 		if msg.text == "Speed":
                     start = time.time()
@@ -292,7 +278,7 @@ def SEND_MESSAGE(op):
                     elapsed_time = time.time() - start
                     sendMessage(msg.to, "%sseconds" % (elapsed_time))
 #-------------------------------------------------------------		
-                if msg.text == "Misi":
+                if msg.text == "punten ngecek":
                     print "ok"
                     _name = msg.text.replace("Mulai","")
                     gs = client.getGroup(msg.to)
@@ -314,26 +300,6 @@ def SEND_MESSAGE(op):
                                 sendText(msg.to,"error")
 #-------------------------------------------------------------	
 #--------------------------------------------------------------
-                if msg.text == "~ THIS IS TDR FAMS ~":
-                    print "ok"
-                    _name = msg.text.replace("~ THIS IS TDR FAMS ~","")
-                    gs = client.getGroup(msg.to)
-                    sendMessage(msg.to,"Test Limit")
-                    targets = []
-                    for g in gs.members:
-                        if _name in g.displayName:
-                            targets.append(g.mid)
-                    if targets == []:
-                        sendMessage(msg.to,"error")
-                    else:
-                        for target in targets:
-                            try:
-                                klist=[client]
-                                kicker=random.choice(klist)
-                                kicker.kickoutFromGroup(msg.to,[target])
-                                print (msg.to,[g.mid])
-                            except:
-                                sendText(msg.to,"error")
 #-------------------------------------------------------------	
             elif msg.text in ["è‡ªå‹•å‚åŠ :ã‚ªãƒ³","Join on","Auto join:on","è‡ªå‹•åƒåŠ ï¼šé–‹"]:
                 if wait["autoJoin"] == True:
